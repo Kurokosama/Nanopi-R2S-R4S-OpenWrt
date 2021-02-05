@@ -1,6 +1,6 @@
 ## OpenWrt Firmwares for NanoPi-R4S
 ### ⚠ WARNING: USE IT UNDER YOUR OWN RISK.
-### Non-profit Uses Only / 仅供个人学习使用.
+### ⚠ Non-profit Uses Only / 仅供个人学习使用.
 - - -
 My personal customized OpenWrt firmware built by Github Action. A fork from CTCGFW. Hereby thanks for their awesome work! <br/>
 OpenWrt Version: 18.06
