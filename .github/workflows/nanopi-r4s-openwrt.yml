@@ -86,7 +86,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: $(date +%y-%m-%d)
+        tag_name: $(%y-%m-%d)
         release_name: R4S build $(date +%y-%m-%d)
         draft: false
         prerelease: false
