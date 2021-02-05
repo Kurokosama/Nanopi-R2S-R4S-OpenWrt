@@ -24,10 +24,9 @@ jobs:
         sudo -E apt-get clean -y
         sudo -E swapoff -a
         sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /usr/local/lib/android /opt/ghc /swapfile
-    - name: Show Server Spaces
+    - name: Server Benchmark
       run: |
-        sudo -E apt-get install screenfetch -y
-        screenfetch
+        wget -qO- --no-check-certificate https://raw.githubusercontent.com/Kurokosama/serverbench/main/bench.sh | bash
     - name: Clone Source
       run: |
         cd "/home/runner"
@@ -88,7 +87,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: $(date +%y-%m-%d)
-        release_name: Build $(date +%y-%m-%d)
+        release_name: R4S build $(date +%y-%m-%d)
         draft: false
         prerelease: false
     - name: Upload Release Asset
