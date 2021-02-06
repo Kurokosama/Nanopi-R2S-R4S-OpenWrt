@@ -86,8 +86,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: $(%y-%m-%d)
-        release_name: R4S build $(date +%y-%m-%d)
+        tag_name: ${{ steps.date.outputs.date }}
+        release_name: R4S build ${{ steps.date.outputs.date }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
