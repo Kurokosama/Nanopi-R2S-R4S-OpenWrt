@@ -55,11 +55,12 @@ jobs:
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-18.06-sha256sums"
     - name: Prepare Release Zip File
+      id: assemble_artifact
       run: |
         cd /home/runner/
         zip OpenWrt-R4S.zip openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz
-#        release_tag="R4S-$(date +%y-%m-%d)"
-#        echo "##[set-output name=release_tag;]$release_tag"
+        release_tag="R4S-$(date +%Y-%m-%d)"
+        echo "##[set-output name=release_tag;]$release_tag"
     - name: Upload OpenWrt-18.06 SHA256SUM Hash
       uses: actions/upload-artifact@v2
       with:
@@ -86,8 +87,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.date.outputs.date }}
-        release_name: R4S build ${{ steps.date.outputs.date }}
+        tag_name: ${{ steps.assemble_artifact.outputs.release_tag }}
+        release_name: Build Date ${{ steps.assemble_artifact.outputs.release_tag }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
