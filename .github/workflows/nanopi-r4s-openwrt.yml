@@ -43,22 +43,22 @@ jobs:
         chmod +x ./customize.sh && ./customize.sh
         make defconfig
         make -j$[$(nproc)+1]
-        mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
-        mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
-        mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-18.06-sha256sums"
+        mv -f "bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../immortalwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
+        mv -f "bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../immortalwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
+        mv -f "bin/targets/rockchip/armv8/sha256sums" "../immortalwrt-18.06-sha256sums"
     - name: Rebuild OpenWrt to Collect Error Log If Failed
       if: failure()
       run: |
         cd "/home/runner/openwrt"
         make -j1 V=s
-        mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
-        mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
-        mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-18.06-sha256sums"
+        mv -f "bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../immortalwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
+        mv -f "bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../immortalwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
+        mv -f "bin/targets/rockchip/armv8/sha256sums" "../immortalwrt-18.06-sha256sums"
     - name: Prepare Release Zip File
       id: assemble_artifact
       run: |
         cd /home/runner/
-        zip OpenWrt-R4S.zip openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz
+        zip OpenWrt-R4S.zip immortalwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz immortalwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz
         release_tag="R4S-$(date +%Y-%m-%d)"
         echo "##[set-output name=release_tag;]$release_tag"
     - name: Upload OpenWrt-18.06 SHA256SUM Hash
@@ -70,12 +70,12 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz
-        path: /home/runner/openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz
+        path: /home/runner/immortalwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz
     - name: Upload OpenWrt-18.06 SquashFS Firmware
       uses: actions/upload-artifact@v2
       with:
         name: openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz
-        path: /home/runner/openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz
+        path: /home/runner/immortalwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz
     - name: Upload OpenWrt-18.06 IPK Packages
       uses: actions/upload-artifact@v2
       with:
@@ -101,3 +101,22 @@ jobs:
         asset_path: /home/runner/OpenWrt-R4S.zip
         asset_name: OpenWrt-R4S.zip
         asset_content_type: application/zip
+  Cleanup-Old-Artifacts:
+    needs: [ImmortalWrt-18_06,ImmortalWrt-Snapshot]
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Cleanup Old Action Artifacts
+      uses: kolpav/purge-artifacts-action@v1
+      with:
+        token: ${{ github.token }}
+        expire-in: 7d
+  Cleanup-Workflow-Runs:
+    needs: Cleanup-Old-Artifacts
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Cleanup Workflow Runs
+        uses: GitRML/delete-workflow-runs@v1.2.1
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 7
