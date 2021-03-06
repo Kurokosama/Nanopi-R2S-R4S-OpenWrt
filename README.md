@@ -18,8 +18,8 @@ OpenWrt Version: 18.06
 6. Only Bootstrap themes included.
 - - -
 ## What are NanoPi R2S and R4S?
-[NanoPi R2S wiki](https://wiki.friendlyarm.com/wiki/index.php/NanoPi_R2S)
-[NanoPi R4S wiki](https://wiki.friendlyarm.com/wiki/index.php/NanoPi_R4S)
+| [NanoPi R2S wiki](https://wiki.friendlyarm.com/wiki/index.php/NanoPi_R2S) | [NanoPi R4S wiki](https://wiki.friendlyarm.com/wiki/index.php/NanoPi_R4S) |
+| ----------- | ----------- |
 - - -
 ## Support original developer if you like
 [AFDian @CN\_SZTL](https://afdian.net/@CN\_SZTL/plan)
