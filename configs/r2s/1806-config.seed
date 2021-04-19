@@ -570,7 +570,3 @@ CONFIG_boost-compile-visibility-hidden=y
 CONFIG_boost-runtime-shared=y
 CONFIG_boost-static-and-shared-libs=y
 CONFIG_boost-variant-release=y
-CONFIG_PACKAGE_coremark=y
-CONFIG_COREMARK_ENABLE_MULTITHREADING=y
-CONFIG_COREMARK_NUMBER_OF_THREADS=16
-CONFIG_COREMARK_OPTIMIZE_O3=y
